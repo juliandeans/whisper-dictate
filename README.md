@@ -37,7 +37,7 @@ paste.
 ## Install
 
 ```sh
-git clone https://github.com/<your-user>/whisper-dictate.git
+git clone https://github.com/juliandeans/whisper-dictate.git
 cd whisper-dictate
 ./install.sh          # or: ./install.sh --lang de
 ```
