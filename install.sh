@@ -152,12 +152,37 @@ else
     done
   fi
 
+  # A non-empty file proves nothing: without permission macOS delivers a
+  # valid WAV full of digital silence (every sample exactly 0). Check the
+  # loudest sample instead. Any real microphone picks up some room noise.
+  PEAK=""
   if [ -s "$TMP_WAV" ]; then
-    echo "Microphone permission looks good: got a non-empty recording."
+    PEAK="$("$PYTHON3" -c '
+import array, sys, wave
+with wave.open(sys.argv[1]) as w:
+    samples = array.array("h", w.readframes(w.getnframes()))
+print(max((abs(s) for s in samples), default=0))
+' "$TMP_WAV" 2>/dev/null || true)"
+  fi
+
+  if [ -n "$PEAK" ] && [ "$PEAK" -gt 0 ]; then
+    echo "Microphone works: real audio arrived (peak level $PEAK)."
   else
-    echo "No audio was captured. Check System Settings > Privacy & Security >"
-    echo "Microphone, and grant access to WhisperDictateRecorder if it is listed"
-    echo "but disabled. See $TMP_LOG for details."
+    if [ "$PEAK" = "0" ]; then
+      echo "The recording contains only digital silence. Usually this means"
+      echo "macOS is blocking the microphone for WhisperDictateRecorder"
+      echo "(or the input device is muted)."
+    else
+      echo "No audio was captured."
+    fi
+    echo "Check System Settings > Privacy & Security > Microphone and allow"
+    echo "WhisperDictateRecorder. If it is not listed, run:"
+    echo "  tccutil reset Microphone io.github.whisper-dictate.recorder"
+    echo "and run ./install.sh again."
+    if [ -s "$TMP_LOG" ]; then
+      echo "Recorder log:"
+      sed 's/^/  /' "$TMP_LOG"
+    fi
   fi
 
   rm -rf "$TMP_DIR"
