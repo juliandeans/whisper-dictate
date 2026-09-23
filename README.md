@@ -56,8 +56,13 @@ Silicon, the recommended option is
 
 ```sh
 mlx-openai-server launch --model-type whisper \
-  --model-path mlx-community/whisper-large-v3-turbo --port 9090
+  --model-path mlx-community/whisper-large-v3-turbo \
+  --host 127.0.0.1 --port 9090
 ```
+
+`--host 127.0.0.1` keeps the server reachable only from your own Mac.
+Without it, mlx-openai-server listens on all network interfaces (`0.0.0.0`),
+and since it has no authentication, anyone on the same network could use it.
 
 Alternatives:
 

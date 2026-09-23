@@ -197,7 +197,8 @@ cat <<EOF
 Next steps:
   1. Start a Whisper server (see README.md for options), e.g.:
        mlx-openai-server launch --model-type whisper \\
-         --model-path mlx-community/whisper-large-v3-turbo --port 9090
+         --model-path mlx-community/whisper-large-v3-turbo \\
+         --host 127.0.0.1 --port 9090
   2. In Raycast: Extensions > Script Commands > Add Script Directory,
      and add: $REPO_DIR/raycast
      Then assign a hotkey to "Dictate" (e.g. Option+Space).
