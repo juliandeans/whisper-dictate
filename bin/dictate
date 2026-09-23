@@ -1,0 +1,39 @@
+#!/bin/bash
+# Toggle push-to-talk dictation: first call starts recording, second call
+# stops it, transcribes it, and pastes the text into the previously
+# focused app.
+#
+# Usage: dictate
+# (no arguments; state lives in $TMPDIR/whisper-dictate, see lib/common.sh)
+
+set -u
+
+SCRIPT_DIR="$(cd -P "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPO_DIR="$(cd -P "$SCRIPT_DIR/.." && pwd)"
+# shellcheck source=../lib/common.sh
+source "$REPO_DIR/lib/common.sh"
+
+log "=== dictate invoked ==="
+
+if ! dictate_recording_active; then
+  dictate_start
+  exit 0
+fi
+
+dictate_transcribe
+
+if [ -n "$FOCUSED_APP" ]; then
+  log "Re-focusing: $FOCUSED_APP"
+  osascript -e 'on run argv' -e 'tell application (item 1 of argv) to activate' \
+    -e 'end run' "$FOCUSED_APP" 2>/dev/null
+  sleep 0.15
+fi
+
+printf '%s' "$TEXT" | pbcopy
+
+if [ "$PASTE" = "1" ]; then
+  osascript -e 'tell application "System Events" to keystroke "v" using command down'
+  log "Pasted."
+else
+  log "Copied to clipboard (PASTE=0)."
+fi

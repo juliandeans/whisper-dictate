@@ -1,0 +1,33 @@
+# Whisper initial_prompt - Vokabular und Stil der Transkription.
+#
+# Das ist KEINE Anweisung an das Modell, sondern gefakter "vorangehender
+# Transkript-Text". Whisper setzt den Stil fort, den es hier sieht. Daraus
+# folgen drei Regeln, alle drei gemessen:
+#
+# 1. Ganze, korrekt interpunktierte Sätze schreiben. Das ist der eigentliche
+#    Grund, warum die Ausgabe überhaupt Satzzeichen und Großschreibung
+#    bekommt. Ohne Prompt liefert Whisper eher Kleinschreibung ohne Punkte.
+#
+# 2. Fachbegriffe im Satz benutzen, nicht als Liste aufzählen. Eine reine
+#    Wortliste wirkt messbar schlechter als natürliche Prosa.
+#
+# 3. Die WICHTIGSTEN Begriffe in den LETZTEN Satz. Der Prompt steht direkt
+#    vor dem Audio, und was am Ende steht, wirkt am stärksten. Derselbe
+#    Begriff im ersten statt im letzten Satz zeigte im Test nicht denselben
+#    Effekt.
+#
+# Keine Meta-Sätze wie "Interpunktiere den Text" - solche Wörter landen
+# sonst wörtlich in der Transkription.
+#
+# Zeilen mit # werden ignoriert, der Rest wird zu einem Absatz verbunden.
+# Kurz halten: Whisper liest nur die letzten ca. 223 Token, alles davor wird
+# abgeschnitten.
+#
+# Ersetze den Beispielabsatz unten durch Prosa aus deinem eigenen Bereich -
+# die Begriffe, die für dich wichtig sind, in Sätzen, die wichtigsten zuletzt.
+
+Beim Debugging habe ich den Endpoint und den Port geprüft, das Feature
+funktioniert, der Bugfix sitzt. Das Script schreibt sein Log, die API
+antwortet korrekt, der Prompt und die Token-Anzahl passen. Der Commit auf dem
+Branch läuft durch, das Deployment im Container ist stabil. Ich schaue mir
+jetzt den Code im Repository an und prüfe das Script.

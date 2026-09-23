@@ -1,0 +1,44 @@
+# whisper-dictate configuration
+#
+# Copied to ~/.config/whisper-dictate/config on first install and never
+# overwritten again — edit the copy, not this file. Environment variables
+# with the same name always take precedence over whatever is set here.
+
+# OpenAI-compatible transcription endpoint of your Whisper server.
+WHISPER_URL=http://127.0.0.1:9090/v1/audio/transcriptions
+
+# Model name to send in the request. Only matters for servers that host
+# more than one model; most single-model servers ignore it.
+WHISPER_MODEL=whisper-large-v3-turbo
+
+# Optional. Sent as an "Authorization: Bearer ..." header when set — needed
+# for most cloud endpoints, not for a local server.
+WHISPER_API_KEY=
+
+# Output language hint, e.g. de or en. Leave empty to let Whisper
+# auto-detect the language (the field is omitted from the request entirely).
+LANGUAGE=
+
+# initial_prompt file — see prompts/en.txt and prompts/de.txt for what makes
+# a good one. Comment lines (#) are stripped, the rest is joined into one
+# paragraph.
+PROMPT_FILE="$HOME/.config/whisper-dictate/prompt.txt"
+
+# Input device name to switch to before recording, as reported by
+# `SwitchAudioSource -a` (brew install switchaudio-osx). Leave empty to
+# leave the current input device as it is.
+MIC=
+
+# Microphone input volume, 0-100. Leave empty to not touch it. This is a
+# system-wide, persistent macOS setting, not a per-recording one — around 75
+# stops some internal microphones from clipping at the default of 100.
+MIC_INPUT_VOLUME=
+
+# Optional file with extra hallucination phrases to filter out, one per
+# line, # comments ignored. Useful if your Whisper server tends to invent a
+# particular phrase on silence.
+EXTRA_HALLUCINATIONS_FILE="$HOME/.config/whisper-dictate/hallucinations.txt"
+
+# 1 = paste the transcript at the cursor after copying it, 0 = only copy it
+# to the clipboard.
+PASTE=1

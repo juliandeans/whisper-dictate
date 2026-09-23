@@ -1,0 +1,33 @@
+# Whisper initial_prompt - vocabulary and style for the transcription.
+#
+# This is NOT an instruction to the model, it is faked "preceding transcript
+# text". Whisper continues the style it sees here. Three rules follow from
+# that, all three measured against a real recording:
+#
+# 1. Write whole, correctly punctuated sentences. This is the actual reason
+#    the output gets punctuation and capitalization at all. Without a
+#    prompt, Whisper tends to produce lowercase text with no punctuation.
+#
+# 2. Use technical terms inside sentences, not as a bare list. A plain word
+#    list measurably performs worse than natural prose.
+#
+# 3. Put the MOST IMPORTANT terms in the LAST sentence. The prompt sits
+#    directly before the audio, and whatever comes last has the strongest
+#    effect. The same term in the first sentence instead of the last did not
+#    show the same effect in testing.
+#
+# No meta-instructions like "add punctuation to the text" - such words tend
+# to leak verbatim into the transcription.
+#
+# Lines starting with # are ignored, the rest is joined into one paragraph.
+# Keep it short: Whisper only reads roughly the last 223 tokens, everything
+# before that gets truncated.
+#
+# Replace the example paragraph below with prose from your own domain -
+# the terms that matter to you, in sentences, most important ones last.
+
+While debugging I checked the endpoint and the port, the feature works, the
+bugfix is in. The script writes its log, the API responds correctly, the
+prompt and the token count look right. The commit on the branch passes, the
+container deployment is stable. I'm now looking at the code in the
+repository and reviewing the script.
